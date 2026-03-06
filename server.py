@@ -143,6 +143,45 @@ async def generate(request: Request):
     return JSONResponse({"result": r.json()["choices"][0]["message"]["content"]})
 
 
+@app.post("/api/chat")
+async def chat(request: Request):
+    body = await request.json()
+    messages = body.get("messages", [])  # Full conversation history from client
+
+    api_key = os.environ.get("OPENAI_API_KEY", "").strip()
+    if not api_key:
+        return JSONResponse({"error": "API key not configured."}, status_code=500)
+
+    system_msg = {
+        "role": "system",
+        "content": (
+            "You are Titan AI, a friendly and enthusiastic YouTube coach for Troy, a 10-year-old boy "
+            "who runs a Roblox BedWars channel called TroyBW. You are brainstorming and strategizing with him. "
+            "Be encouraging, fun, and use simple language. Use gaming references he'll relate to. "
+            "Help him with video ideas, channel strategy, thumbnails, titles, scripts, and anything YouTube-related. "
+            "Keep responses concise — max 3-4 short paragraphs. Use emojis to keep it engaging. "
+            "Always end with a question or challenge to keep the conversation going."
+        )
+    }
+
+    full_messages = [system_msg] + messages
+
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            r = await client.post(
+                OPENAI_URL,
+                headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+                json={"model": "gpt-4o", "messages": full_messages, "max_tokens": 500, "temperature": 0.9},
+            )
+    except httpx.TimeoutException:
+        return JSONResponse({"error": "Timed out — try again!"}, status_code=500)
+
+    if r.status_code != 200:
+        return JSONResponse({"error": f"Error: {r.status_code}"}, status_code=500)
+
+    return JSONResponse({"reply": r.json()["choices"][0]["message"]["content"]})
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8010, log_level="info")

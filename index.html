@@ -544,6 +544,8 @@
           class="sname">Brand Guide</span></button>
       <button class="suite-btn" onclick="show('sitebuilder',this)"><span class="sicon">🌐</span><span
           class="sname">Channel Site</span></button>
+      <button class="suite-btn" id="chat-tab-btn" onclick="show('chat',this)"><span class="sicon">💬</span><span
+          class="sname">Brainstorm</span></button>
     </div>
 
     <div class="panels">
@@ -680,6 +682,33 @@
         </div>
       </div>
 
+      <!-- CHAT / BRAINSTORM -->
+      <div class="panel" id="p-chat">
+        <div class="tool-card" style="padding-bottom:0">
+          <div class="tool-title">💬 Brainstorm with Titan AI</div>
+          <div class="tool-desc">Chat directly with your AI coach! Ask anything about your channel, get ideas, talk
+            strategy — like having a YouTube expert in your pocket. Just type and hit Enter.</div>
+          <div id="chat-messages"
+            style="min-height:280px;max-height:420px;overflow-y:auto;background:var(--card2);border:1.5px solid rgba(255,107,0,.18);border-radius:12px;padding:16px;margin-bottom:14px;display:flex;flex-direction:column;gap:10px;">
+            <div
+              style="background:rgba(255,107,0,.1);border-radius:10px;padding:12px 14px;align-self:flex-start;max-width:85%;">
+              <span style="color:#ff9a3c;font-weight:700;font-size:.8rem;">🤖 TITAN AI</span><br />
+              <span style="color:#e8eaf6;font-size:.9rem;line-height:1.65;">Hey Troy! 👋 I'm your personal YouTube
+                coach. What do you want to work on today? We can brainstorm video ideas, talk strategy, plan thumbnails
+                — anything for TroyBW! What's on your mind? 🎮</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;padding-bottom:20px;">
+            <input id="chat-input" type="text" placeholder="Ask me anything... e.g. What video should I post this week?"
+              style="flex:1;background:var(--card2);border:1.5px solid rgba(255,107,0,.2);border-radius:10px;color:var(--text);font-family:Inter,sans-serif;font-size:.92rem;padding:12px 14px;outline:none;transition:border-color .2s;"
+              onkeydown="if(event.key==='Enter')sendChat()" onfocus="this.style.borderColor='var(--orange)'"
+              onblur="this.style.borderColor='rgba(255,107,0,.2)'">
+            <button class="btn-go" style="flex:0;padding:12px 20px;" onclick="sendChat()" id="chat-send-btn">⚡
+              Send</button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <footer>Built for <span>Troy Chen</span> by Titan Signal AI &nbsp;·&nbsp; TroyBW Creator OS v3.0 — Full Suite
@@ -751,6 +780,51 @@
         const btn = e.target; const orig = btn.textContent;
         btn.textContent = '✅ Copied!'; setTimeout(() => btn.textContent = orig, 1600);
       });
+    }
+
+    // ── Chat ──
+    const chatHistory = [];
+
+    async function sendChat() {
+      const input = document.getElementById('chat-input');
+      const msg = input.value.trim();
+      if (!msg) return;
+      input.value = '';
+
+      const box = document.getElementById('chat-messages');
+      // Add user message
+      chatHistory.push({ role: 'user', content: msg });
+      box.innerHTML += `<div style="background:rgba(56,189,248,.1);border-radius:10px;padding:12px 14px;align-self:flex-end;max-width:85%;margin-left:auto;"><span style="color:#38bdf8;font-weight:700;font-size:.8rem;">🎮 TROY</span><br/><span style="color:#e8eaf6;font-size:.9rem;line-height:1.65;">${escHtml(msg)}</span></div>`;
+
+      // Thinking bubble
+      const thinkId = 'think-' + Date.now();
+      box.innerHTML += `<div id="${thinkId}" style="background:rgba(255,107,0,.08);border-radius:10px;padding:12px 14px;align-self:flex-start;max-width:85%;"><span style="color:#ff9a3c;font-weight:700;font-size:.8rem;">🤖 TITAN AI</span><br/><span style="color:#8892a4;font-size:.9rem;">thinking... ⏳</span></div>`;
+      box.scrollTop = box.scrollHeight;
+
+      const sendBtn = document.getElementById('chat-send-btn');
+      sendBtn.disabled = true;
+
+      try {
+        const r = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: chatHistory })
+        });
+        const d = await r.json();
+        const reply = d.error ? '❌ ' + d.error : d.reply;
+        chatHistory.push({ role: 'assistant', content: reply });
+        document.getElementById(thinkId).innerHTML = `<span style="color:#ff9a3c;font-weight:700;font-size:.8rem;">🤖 TITAN AI</span><br/><span style="color:#e8eaf6;font-size:.9rem;line-height:1.65;white-space:pre-wrap;">${escHtml(reply)}</span>`;
+      } catch {
+        document.getElementById(thinkId).innerHTML = `<span style="color:#ff9a3c;font-weight:700;font-size:.8rem;">🤖 TITAN AI</span><br/><span style="color:#f87171;font-size:.9rem;">❌ Connection lost. Try again!</span>`;
+      }
+
+      box.scrollTop = box.scrollHeight;
+      sendBtn.disabled = false;
+      input.focus();
+    }
+
+    function escHtml(t) {
+      return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
   </script>
 </body>
