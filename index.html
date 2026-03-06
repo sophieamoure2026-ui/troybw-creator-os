@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TroyBW Creator OS — Full Suite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #07091a;
+      --card: #0f1827;
+      --card2: #162032;
+      --card3: #1e2d45;
+      --orange: #ff6b00;
+      --orange2: #ff9a3c;
+      --gold: #ffd700;
+      --green: #22c55e;
+      --blue: #38bdf8;
+      --purple: #a855f7;
+      --text: #e8eaf6;
+      --muted: #7a8699;
+      --radius: 16px;
+      --glow-o: 0 0 24px rgba(255, 107, 0, .4);
+      --glow-g: 0 0 24px rgba(255, 215, 0, .35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(1px 1px at 10% 20%, rgba(255, 255, 255, .2) 0%, transparent 100%), radial-gradient(1px 1px at 75% 35%, rgba(255, 255, 255, .15) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 45% 78%, rgba(255, 255, 255, .17) 0%, transparent 100%), radial-gradient(1px 1px at 88% 10%, rgba(255, 255, 255, .2) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 24px 16px 80px;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      padding: 24px 0 12px;
+    }
+
+    .logo {
+      font-family: 'Bangers', cursive;
+      font-size: 2.8rem;
+      letter-spacing: 3px;
+      background: linear-gradient(135deg, var(--orange), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 16px rgba(255, 107, 0, .55));
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: .82rem;
+      margin-top: 4px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .badges {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: .68rem;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .badge-titan {
+      background: linear-gradient(135deg, #ff6b00, #ff9a3c);
+      color: #fff;
+    }
+
+    .badge-suite {
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: #fff;
+    }
+
+    /* Growth Plan Hero */
+    .hero {
+      margin-top: 24px;
+      background: linear-gradient(135deg, #0a1628 0%, #1a1000 100%);
+      border: 2px solid var(--gold);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 0 50px rgba(255, 215, 0, .12);
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--gold);
+      color: #000;
+      font-size: .68rem;
+      font-weight: 800;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .hero-title {
+      font-family: 'Bangers', cursive;
+      font-size: 2rem;
+      letter-spacing: 2px;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .hero-desc {
+      color: var(--muted);
+      font-size: .87rem;
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    .milestones {
+      display: flex;
+      gap: 7px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .ms {
+      flex: 1;
+      min-width: 90px;
+      background: rgba(255, 215, 0, .06);
+      border: 1px solid rgba(255, 215, 0, .2);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .ms-num {
+      font-family: 'Bangers', cursive;
+      font-size: 1.2rem;
+      color: var(--gold);
+    }
+
+    .ms-lbl {
+      font-size: .68rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .btn-hero {
+      width: 100%;
+      padding: 15px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #a16207, var(--gold));
+      border: none;
+      color: #000;
+      font-family: 'Bangers', cursive;
+      font-size: 1.25rem;
+      letter-spacing: 2px;
+      cursor: pointer;
+      box-shadow: var(--glow-g);
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .btn-hero:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(255, 215, 0, .5);
+    }
+
+    .btn-hero:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Suite Grid */
+    .suite-label {
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin: 30px 0 14px;
+    }
+
+    .suite-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    @media(max-width:600px) {
+      .suite-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .suite-btn {
+      background: var(--card);
+      border: 2px solid transparent;
+      border-radius: 14px;
+      padding: 14px 10px;
+      cursor: pointer;
+      text-align: center;
+      transition: all .2s;
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .suite-btn:hover {
+      border-color: var(--orange);
+      color: var(--orange2);
+    }
+
+    .suite-btn.active {
+      border-color: var(--orange);
+      background: linear-gradient(135deg, rgba(255, 107, 0, .15), rgba(255, 154, 60, .08));
+      color: var(--orange2);
+      box-shadow: var(--glow-o);
+    }
+
+    .suite-btn .sicon {
+      font-size: 1.6rem;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .suite-btn .sname {
+      font-size: .75rem;
+      font-weight: 600;
+    }
+
+    /* Panels */
+    .panels {
+      margin-top: 16px;
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+      animation: fadeIn .2s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .tool-card {
+      background: var(--card);
+      border: 1px solid rgba(255, 107, 0, .12);
+      border-radius: var(--radius);
+      padding: 26px;
+    }
+
+    .tool-title {
+      font-family: 'Bangers', cursive;
+      font-size: 1.65rem;
+      letter-spacing: 2px;
+      color: var(--orange2);
+      margin-bottom: 5px;
+    }
+
+    .tool-desc {
+      color: var(--muted);
+      font-size: .86rem;
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: .76rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 7px;
+    }
+
+    textarea,
+    select {
+      width: 100%;
+      background: var(--card2);
+      border: 1.5px solid rgba(255, 107, 0, .18);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: .92rem;
+      padding: 12px 14px;
+      resize: vertical;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    textarea {
+      min-height: 84px;
+    }
+
+    textarea:focus,
+    select:focus {
+      border-color: var(--orange);
+    }
+
+    select {
+      min-height: 44px;
+      cursor: pointer;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-go {
+      flex: 1;
+      padding: 13px 20px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--orange), var(--orange2));
+      border: none;
+      color: #fff;
+      font-family: 'Bangers', cursive;
+      font-size: 1.1rem;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      box-shadow: var(--glow-o);
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .btn-go:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 32px rgba(255, 107, 0, .55);
+    }
+
+    .btn-go:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-copy {
+      padding: 13px 16px;
+      border-radius: 12px;
+      background: var(--card2);
+      border: 1.5px solid rgba(255, 107, 0, .25);
+      color: var(--orange2);
+      font-weight: 600;
+      font-size: .86rem;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .btn-copy:hover {
+      background: rgba(255, 107, 0, .1);
+      border-color: var(--orange);
+    }
+
+    .result {
+      margin-top: 18px;
+      background: var(--card2);
+      border: 1.5px solid rgba(255, 107, 0, .18);
+      border-radius: 12px;
+      padding: 18px;
+      min-height: 64px;
+      font-size: .9rem;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      display: none;
+    }
+
+    .result.show {
+      display: block;
+      animation: fadeIn .3s ease;
+    }
+
+    .result.loading {
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .result-gold {
+      border-color: rgba(255, 215, 0, .25) !important;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 107, 0, .15);
+      border-top-color: var(--orange);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    /* skill chips */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 18px;
+    }
+
+    .chip {
+      background: var(--card2);
+      border: 1px solid rgba(255, 107, 0, .2);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: .76rem;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .chip:hover,
+    .chip.active {
+      border-color: var(--orange);
+      color: var(--orange2);
+      background: rgba(255, 107, 0, .1);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      color: var(--muted);
+      font-size: .76rem;
+    }
+
+    footer span {
+      color: var(--orange);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+
+    <header>
+      <div class="logo">⚔️ TROYBW CREATOR OS</div>
+      <div class="subtitle">Full Production Suite — Roblox BedWars</div>
+      <div class="badges">
+        <span class="badge badge-titan">🤖 Powered by Titan AI</span>
+        <span class="badge badge-suite">👑 Full Suite</span>
+      </div>
+    </header>
+
+    <!-- HERO: Growth Plan -->
+    <div class="hero">
+      <div class="hero-tag">⭐ Start Here, Troy</div>
+      <div class="hero-title">📈 Your 90-Day Subscriber Growth Plan</div>
+      <div class="hero-desc">You're at 0 subs right now. Let's build your personal roadmap to 1,000 subscribers — so
+        you're ready to monetize when you turn 13. This is built just for you, TroyBW.</div>
+      <div class="milestones">
+        <div class="ms">
+          <div class="ms-num">🎯 0</div>
+          <div class="ms-lbl">Today</div>
+        </div>
+        <div class="ms">
+          <div class="ms-num">🔥 10</div>
+          <div class="ms-lbl">Week 4</div>
+        </div>
+        <div class="ms">
+          <div class="ms-num">💪 100</div>
+          <div class="ms-lbl">Month 2</div>
+        </div>
+        <div class="ms">
+          <div class="ms-num">🚀 500</div>
+          <div class="ms-lbl">Month 3</div>
+        </div>
+        <div class="ms">
+          <div class="ms-num">👑 1K</div>
+          <div class="ms-lbl">By Age 13</div>
+        </div>
+      </div>
+      <button class="btn-hero" id="btn-growth" onclick="runGrowth()">⚡ BUILD MY PLAN NOW</button>
+      <div class="result result-gold" id="r-growthplan"></div>
+    </div>
+
+    <!-- Suite Grid -->
+    <div class="suite-label">🎮 Full Creator Suite</div>
+    <div class="suite-grid">
+      <button class="suite-btn active" onclick="show('thumbnail',this)"><span class="sicon">🎨</span><span
+          class="sname">Thumbnail Design</span></button>
+      <button class="suite-btn" onclick="show('script',this)"><span class="sicon">📝</span><span class="sname">Script
+          Writer</span></button>
+      <button class="suite-btn" onclick="show('titles',this)"><span class="sicon">🏆</span><span class="sname">Title +
+          SEO</span></button>
+      <button class="suite-btn" onclick="show('ideas',this)"><span class="sicon">💡</span><span class="sname">Video
+          Ideas</span></button>
+      <button class="suite-btn" onclick="show('audicoach',this)"><span class="sicon">🎵</span><span class="sname">Audio
+          Coach</span></button>
+      <button class="suite-btn" onclick="show('videoguide',this)"><span class="sicon">🎬</span><span class="sname">Video
+          Editing</span></button>
+      <button class="suite-btn" onclick="show('brandguide',this)"><span class="sicon">🖌️</span><span
+          class="sname">Brand Guide</span></button>
+      <button class="suite-btn" onclick="show('sitebuilder',this)"><span class="sicon">🌐</span><span
+          class="sname">Channel Site</span></button>
+    </div>
+
+    <div class="panels">
+
+      <!-- THUMBNAIL -->
+      <div class="panel active" id="p-thumbnail">
+        <div class="tool-card">
+          <div class="tool-title">🎨 Thumbnail Designer</div>
+          <div class="tool-desc">Get 3 professional thumbnail concepts with exact text, scene, colors, and composition —
+            ready to recreate in Canva.</div>
+          <label>Describe your video</label>
+          <textarea id="i-thumbnail"
+            placeholder="e.g. I defended my bed solo against 4 enemies in the final round of BedWars..."></textarea>
+          <div class="btn-row">
+            <button class="btn-go" onclick="run('thumbnail')">⚡ DESIGN THUMBNAILS</button>
+            <button class="btn-copy" onclick="cp('thumbnail',event)">📋 Copy</button>
+          </div>
+          <div class="result" id="r-thumbnail"></div>
+        </div>
+      </div>
+
+      <!-- SCRIPT -->
+      <div class="panel" id="p-script">
+        <div class="tool-card">
+          <div class="tool-title">📝 Script Writer</div>
+          <div class="tool-desc">Full word-for-word script with hooks, CTAs, stage directions — just read and record.
+          </div>
+          <label>Video Title</label>
+          <textarea id="i-script-title" style="min-height:52px"
+            placeholder="e.g. I Won a 1v4 Solo in Roblox BedWars..."></textarea>
+          <label style="margin-top:14px">Video Length</label>
+          <select id="i-script-len">
+            <option value="Short (2-3 minutes)">🎬 Short (2-3 min) — Punchy clip</option>
+            <option value="Medium (5-7 minutes)" selected>🎥 Medium (5-7 min) — Standard video</option>
+            <option value="Long (10-15 minutes)">📽️ Long (10-15 min) — Full episode</option>
+          </select>
+          <div class="btn-row" style="margin-top:16px">
+            <button class="btn-go" onclick="run('script')">⚡ WRITE MY SCRIPT</button>
+            <button class="btn-copy" onclick="cp('script',event)">📋 Copy</button>
+          </div>
+          <div class="result" id="r-script"></div>
+        </div>
+      </div>
+
+      <!-- TITLES -->
+      <div class="panel" id="p-titles">
+        <div class="tool-card">
+          <div class="tool-title">🏆 Title + SEO Optimizer</div>
+          <div class="tool-desc">5 optimized title variations + best keyword, description opener, and hashtags.</div>
+          <label>Your rough title idea</label>
+          <textarea id="i-titles" style="min-height:52px"
+            placeholder="e.g. winning bedwars against 4 people by myself"></textarea>
+          <div class="btn-row">
+            <button class="btn-go" onclick="run('titles')">⚡ OPTIMIZE TITLE + SEO</button>
+            <button class="btn-copy" onclick="cp('titles',event)">📋 Copy</button>
+          </div>
+          <div class="result" id="r-titles"></div>
+        </div>
+      </div>
+
+      <!-- IDEAS -->
+      <div class="panel" id="p-ideas">
+        <div class="tool-card">
+          <div class="tool-title">💡 Video Idea Generator</div>
+          <div class="tool-desc">10 high-potential BedWars video ideas with titles, hooks, and difficulty ratings.</div>
+          <div class="chips">
+            <span class="chip active" id="chip-bedwars" onclick="toggleChip(this)">⚔️ BedWars</span>
+            <span class="chip" id="chip-tutorials" onclick="toggleChip(this)">📚 Tutorials</span>
+            <span class="chip" id="chip-challenges" onclick="toggleChip(this)">🔥 Challenges</span>
+            <span class="chip" id="chip-collab" onclick="toggleChip(this)">🤝 Collabs</span>
+            <span class="chip" id="chip-tierlist" onclick="toggleChip(this)">📊 Tier Lists</span>
+          </div>
+          <div class="btn-row">
+            <button class="btn-go" onclick="run('ideas')">⚡ GENERATE 10 IDEAS</button>
+            <button class="btn-copy" onclick="cp('ideas',event)">📋 Copy</button>
+          </div>
+          <div class="result" id="r-ideas"></div>
+        </div>
+      </div>
+
+      <!-- AUDIO -->
+      <div class="panel" id="p-audicoach">
+        <div class="tool-card">
+          <div class="tool-title">🎵 Audio Production Coach</div>
+          <div class="tool-desc">Complete audio guide: mic setup, voiceover technique, free music sources, sound FX, and
+            CapCut mixing — all specific to Troy and BedWars content.</div>
+          <div class="btn-row">
+            <button class="btn-go" onclick="run('audicoach')">⚡ GET AUDIO GUIDE</button>
+            <button class="btn-copy" onclick="cp('audicoach',event)">📋 Copy</button>
+          </div>
+          <div class="result" id="r-audicoach"></div>
+        </div>
+      </div>
+
+      <!-- VIDEO EDITING -->
+      <div class="panel" id="p-videoguide">
+        <div class="tool-card">
+          <div class="tool-title">🎬 Video Editing Guide</div>
+          <div class="tool-desc">Full production workflow: recording setup, CapCut step-by-step, BedWars editing style,
+            effects, and export settings for YouTube.</div>
+          <div class="btn-row">
+            <button class="btn-go" onclick="run('videoguide')">⚡ GET EDITING GUIDE</button>
+            <button class="btn-copy" onclick="cp('videoguide',event)">📋 Copy</button>
+          </div>
+          <div class="result" id="r-videoguide"></div>
+        </div>
+      </div>
+
+      <!-- BRAND GUIDE -->
+      <div class="panel" id="p-brandguide">
+        <div class="tool-card">
+          <div class="tool-title">🖌️ Channel Brand Guide</div>
+          <div class="tool-desc">Institutional-level brand spec: color palette (hex codes), fonts, logo concept, banner
+            layout, thumbnail template, and visual identity rules for TroyBW.</div>
+          <div class="btn-row">
+            <button class="btn-go" onclick="run('brandguide')">⚡ DESIGN MY BRAND</button>
+            <button class="btn-copy" onclick="cp('brandguide',event)">📋 Copy</button>
+          </div>
+          <div class="result" id="r-brandguide"></div>
+        </div>
+      </div>
+
+      <!-- SITE BUILDER -->
+      <div class="panel" id="p-sitebuilder">
+        <div class="tool-card">
+          <div class="tool-title">🌐 YouTube Channel Website</div>
+          <div class="tool-desc">Generates a full, premium HTML website for TroyBW — with hero, video grid, tips,
+            newsletter, and footer. Copy the code and save as a .html file to publish anywhere!</div>
+          <div class="btn-row">
+            <button class="btn-go" onclick="run('sitebuilder')">⚡ BUILD MY SITE</button>
+            <button class="btn-copy" onclick="cp('sitebuilder',event)">📋 Copy HTML</button>
+          </div>
+          <div class="result" id="r-sitebuilder"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>Built for <span>Troy Chen</span> by Titan Signal AI &nbsp;·&nbsp; TroyBW Creator OS v3.0 — Full Suite
+    </footer>
+  </div>
+
+  <script>
+    function show(tool, el) {
+      document.querySelectorAll('.suite-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('p-' + tool).classList.add('active');
+      window.scrollTo({ top: document.querySelector('.suite-label').offsetTop - 20, behavior: 'smooth' });
+    }
+
+    function toggleChip(el) { el.classList.toggle('active'); }
+
+    async function runGrowth() {
+      const btn = document.getElementById('btn-growth');
+      const box = document.getElementById('r-growthplan');
+      btn.disabled = true; btn.textContent = '⏳ Building your plan...';
+      box.className = 'result result-gold show loading';
+      box.innerHTML = '<div class="spinner"></div> Titan AI is building your personal 90-day growth plan, Troy...';
+      try {
+        const r = await fetch('/api/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tool: 'growthplan', prompt: 'Build my 90-day subscriber growth plan for TroyBW.' }) });
+        const d = await r.json();
+        box.className = 'result result-gold show';
+        box.textContent = d.error ? '❌ ' + d.error : d.result;
+      } catch { box.className = 'result result-gold show'; box.textContent = '❌ Server unreachable.'; }
+      btn.disabled = false; btn.textContent = '⚡ REBUILD MY PLAN';
+    }
+
+    async function run(tool) {
+      const box = document.getElementById('r-' + tool);
+      box.className = 'result show loading';
+      box.innerHTML = '<div class="spinner"></div> Titan AI is working on it... 🔥';
+
+      let prompt = '';
+      if (tool === 'thumbnail') {
+        prompt = document.getElementById('i-thumbnail').value.trim();
+        if (!prompt) { box.className = 'result show'; box.textContent = '⚠️ Describe your video first!'; return; }
+      } else if (tool === 'script') {
+        const t = document.getElementById('i-script-title').value.trim();
+        const l = document.getElementById('i-script-len').value;
+        if (!t) { box.className = 'result show'; box.textContent = '⚠️ Enter a video title first!'; return; }
+        prompt = `Title: "${t}" | Length: ${l}`;
+      } else if (tool === 'titles') {
+        prompt = document.getElementById('i-titles').value.trim();
+        if (!prompt) { box.className = 'result show'; box.textContent = '⚠️ Give me a rough title first!'; return; }
+      } else if (tool === 'ideas') {
+        const chips = [...document.querySelectorAll('.chip.active')].map(c => c.textContent.trim()).join(', ');
+        prompt = `Generate 10 Roblox BedWars video ideas for TroyBW. Focus on: ${chips || 'BedWars general content'}.`;
+      } else {
+        prompt = `Generate the ${tool} content for TroyBW now.`;
+      }
+
+      try {
+        const r = await fetch('/api/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tool, prompt }) });
+        const d = await r.json();
+        box.className = 'result show';
+        box.textContent = d.error ? '❌ ' + d.error : d.result;
+      } catch { box.className = 'result show'; box.textContent = '❌ Server unreachable.'; }
+    }
+
+    function cp(tool, e) {
+      const box = document.getElementById('r-' + tool);
+      if (!box.textContent.trim()) return;
+      navigator.clipboard.writeText(box.textContent).then(() => {
+        const btn = e.target; const orig = btn.textContent;
+        btn.textContent = '✅ Copied!'; setTimeout(() => btn.textContent = orig, 1600);
+      });
+    }
+  </script>
+</body>
+
+</html>
