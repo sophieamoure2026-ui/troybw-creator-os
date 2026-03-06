@@ -109,10 +109,13 @@ async def generate(request: Request):
     tool = body.get("tool")
     prompt = body.get("prompt", "")
 
+    # Read key fresh on every request so env var changes take effect immediately
+    api_key = os.environ.get("OPENAI_API_KEY", "").strip()
+
     if tool not in SYSTEM_PROMPTS:
         return JSONResponse({"error": "Invalid tool"}, status_code=400)
-    if not OPENAI_API_KEY:
-        return JSONResponse({"error": "OPENAI_API_KEY not set."}, status_code=500)
+    if not api_key:
+        return JSONResponse({"error": "OPENAI_API_KEY not configured on server. Contact Titan."}, status_code=500)
 
     payload = {
         "model": "gpt-4o",
@@ -124,15 +127,18 @@ async def generate(request: Request):
         "temperature": 0.85,
     }
 
-    async with httpx.AsyncClient(timeout=60.0) as client:
-        r = await client.post(
-            OPENAI_URL,
-            headers={"Authorization": f"Bearer {OPENAI_API_KEY}", "Content-Type": "application/json"},
-            json=payload,
-        )
+    try:
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            r = await client.post(
+                OPENAI_URL,
+                headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+                json=payload,
+            )
+    except httpx.TimeoutException:
+        return JSONResponse({"error": "Request timed out — try again in a moment."}, status_code=500)
 
     if r.status_code != 200:
-        return JSONResponse({"error": f"OpenAI error: {r.text}"}, status_code=500)
+        return JSONResponse({"error": f"OpenAI error: {r.status_code} — {r.text[:300]}"}, status_code=500)
 
     return JSONResponse({"result": r.json()["choices"][0]["message"]["content"]})
 
